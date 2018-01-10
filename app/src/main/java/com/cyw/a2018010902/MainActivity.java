@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     String idLove = "LOVE";
     NotificationChannel channelLove;
     NotificationManager nm;
+    int NOTIFICATION_ID=1234;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +39,11 @@ public class MainActivity extends AppCompatActivity {
         channelLove.enableVibration(true);
         nm.createNotificationChannel(channelLove);
     }
+    //小老鼠叫做annotation, TargetApi是告訴系統現在要用Oreo的版本跑程式, 搭配if
     @TargetApi(Build.VERSION_CODES.O)
+    //@這個指令是要系統跑Oreo時, 忽略Oreo以下版本會出現的錯誤
     @SuppressWarnings("deprecation")
+
     public void click1(View v)
     {
 
@@ -63,12 +67,22 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setContentTitle("測試");
         builder.setContentText("這是內容");
-        builder.setSmallIcon(R.mipmap.ic_launcher_round);
-        //設定點完這個Notifycationon就消失
+        if (Build.VERSION.SDK_INT >= 26)
+        {
+            builder.setSmallIcon(R.drawable.ic_launcher_background);
+        }else{
+            builder.setSmallIcon(R.mipmap.ic_launcher);
+        }
+        //設定點完這個Notificationon就消失
         builder.setAutoCancel(true);
         builder.setContentIntent(pi);
         Notification notify = builder.build();
-        nm.notify(1, notify);
+        nm.notify(NOTIFICATION_ID, notify);
 
+    }
+    //取消notification
+    public void click2(View v)
+    {
+        nm.cancel(NOTIFICATION_ID);
     }
 }
